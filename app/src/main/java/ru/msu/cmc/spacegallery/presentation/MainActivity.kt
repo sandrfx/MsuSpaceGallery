@@ -1,9 +1,11 @@
 package ru.msu.cmc.spacegallery.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import ru.msu.cmc.spacegallery.R
 import ru.msu.cmc.spacegallery.presentation.list.FragmentGalleryList
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,8 +15,21 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.fmt_container, FragmentGalleryList())
+                .replace(R.id.fmt_container, FragmentGalleryList())
                 .commit()
         }
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (supportFragmentManager.fragments.size > 1) {
+                        supportFragmentManager.popBackStack()
+                    } else {
+                        finish()
+                    }
+                }
+            }
+        )
     }
 }

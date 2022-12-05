@@ -6,6 +6,10 @@
 
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
+        android:id="@+id/itemCard"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackground"
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

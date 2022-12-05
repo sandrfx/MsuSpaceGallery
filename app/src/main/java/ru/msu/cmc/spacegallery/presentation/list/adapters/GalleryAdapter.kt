@@ -9,16 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.msu.cmc.spacegallery.R
 import ru.msu.cmc.spacegallery.models.GalleryItem
+import ru.msu.cmc.spacegallery.presentation.list.OnGalleryItemClicked
 
-class GalleryAdapter(private val dataSet: List<GalleryItem>): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+class GalleryAdapter(
+    private val dataSet: List<GalleryItem>,
+    private val onClickAction: OnGalleryItemClicked
+    ): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
+        val itemCard: View
         val imagePreview: ImageView
         val tvTitle: TextView
         val tvDate: TextView
 
         init {
+            itemCard = view.findViewById(R.id.itemCard)
             imagePreview = view.findViewById(R.id.imgPreview)
             tvTitle = view.findViewById(R.id.tvTitle)
             tvDate = view.findViewById(R.id.tvDate)
@@ -37,6 +43,10 @@ class GalleryAdapter(private val dataSet: List<GalleryItem>): RecyclerView.Adapt
                 Glide.with(imagePreview.context).load(it.imageUrl).into(imagePreview)
                 tvTitle.text = it.title
                 tvDate.text = it.date
+                val galleryItem = it
+                itemCard.setOnClickListener {
+                    onClickAction.onGalleryItemClicked(galleryItem)
+                }
             }
         }
     }
