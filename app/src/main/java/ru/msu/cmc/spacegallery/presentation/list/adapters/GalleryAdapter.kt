@@ -12,9 +12,10 @@ import ru.msu.cmc.spacegallery.models.GalleryItem
 import ru.msu.cmc.spacegallery.presentation.list.OnGalleryItemClicked
 
 class GalleryAdapter(
-    private val dataSet: List<GalleryItem>,
     private val onClickAction: OnGalleryItemClicked
     ): RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+
+    private val dataSet: MutableList<GalleryItem> = mutableListOf()
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -52,4 +53,10 @@ class GalleryAdapter(
     }
 
     override fun getItemCount(): Int = dataSet.size
+
+    fun addItems(items: List<GalleryItem>) {
+        val start = dataSet.size
+        dataSet.addAll(items)
+        notifyItemInserted(start)
+    }
 }

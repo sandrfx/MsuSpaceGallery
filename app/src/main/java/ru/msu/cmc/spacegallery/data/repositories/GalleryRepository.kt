@@ -4,5 +4,5 @@ import ru.msu.cmc.spacegallery.models.GalleryItem
 
 interface GalleryRepository {
 
-    fun getGallery(): List<GalleryItem>
+    suspend fun getGallery(count: Int): List<GalleryItem>
 }
