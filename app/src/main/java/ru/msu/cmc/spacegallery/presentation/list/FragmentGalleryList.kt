@@ -17,24 +17,29 @@ import ru.msu.cmc.spacegallery.presentation.list.adapters.GalleryAdapter
 
 class FragmentGalleryList : Fragment(R.layout.fmt_gallery_list), OnGalleryItemClicked {
 
+    private lateinit var progressIndicator: View
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerView)
 
+        progressIndicator = view.findViewById(R.id.progressIndicator)
+
         val repository: GalleryRepository = GalleryRepositoryImpl(
             NetworkGalleryDataStore(RetrofitBuilder.galleryService),
-            GalleryItemConverterImpl()
+            GalleryItemConverterImpl(),
+            Dispatchers.IO
         )
 
         val galleryAdapter = GalleryAdapter(this)
         recycler.adapter = galleryAdapter
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
+            showProgressIndicator()
             val result = repository.getGallery(20)
-            withContext(Dispatchers.Main) {
-                galleryAdapter.addItems(result)
-            }
+            hideProgressIndicator()
+            galleryAdapter.addItems(result)
         }
     }
 
@@ -43,5 +48,13 @@ class FragmentGalleryList : Fragment(R.layout.fmt_gallery_list), OnGalleryItemCl
             .add(R.id.fmt_container, FragmentGalleryDetails.createFragment(galleryItem))
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun showProgressIndicator() {
+        progressIndicator.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressIndicator() {
+        progressIndicator.visibility = View.GONE
     }
 }

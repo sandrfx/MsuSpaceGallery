@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.msu.cmc.spacegallery.R
 import ru.msu.cmc.spacegallery.presentation.list.FragmentGalleryList
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
